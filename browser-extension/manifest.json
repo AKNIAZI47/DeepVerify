@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "VeriGlow Fact Checker",
+  "version": "1.0.0",
+  "description": "Analyze news authenticity with one click",
+  "permissions": ["activeTab", "contextMenus"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }]
+}
