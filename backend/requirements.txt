@@ -25,3 +25,4 @@ redis[hiredis]>=5.1.0
 celery[redis]>=5.4.0
 prometheus-client>=0.21.0
 sentry-sdk[fastapi]>=2.14.0
+gradio>=5.23.0
