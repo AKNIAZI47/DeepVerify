@@ -31,7 +31,7 @@
    - Click "Connect" → "Connect your application"
    - Copy connection string
    - Replace `<password>` with your password
-   - Example: `mongodb+srv://deepverify:PASSWORD@cluster0.xxxxx.mongodb.net/deepverify`
+   - Example: `mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/deepverify`
 
 ### Step 2: Push to GitHub
 
