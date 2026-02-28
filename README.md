@@ -1,685 +1,199 @@
-# DeepVerify - AI-Powered Fake News Detection Platform
+# DeepVerify
 
-<div align="center">
+> Can you trust what you're reading? DeepVerify helps you find out.
 
-**🔍 Detect. Verify. Trust.**
-
-An intelligent fact-checking platform that uses machine learning and AI to analyze news articles, detect misinformation, and provide confidence-scored verdicts.
-
-[Quick Start](#-quick-start) • [Features](#-features) • [Tech Stack](#-tech-stack) • [Documentation](#-documentation) • [API Reference](#-api-endpoints)
-
-</div>
+Misinformation spreads fast. DeepVerify is a tool I built to slow it down — paste in any news article or URL and get an instant verdict on whether it's likely real, fake, or somewhere in between. It uses a trained ML model under the hood, but the goal was always simple: make fact-checking fast and accessible for everyone.
 
 ---
 
-## 📋 Table of Contents
+## What it does
 
-- [Project Overview](#-project-overview)
-- [Quick Start](#-quick-start)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Setup Instructions](#-setup-instructions)
-- [API Endpoints](#-api-endpoints)
-- [Configuration](#-configuration)
-- [Recent Updates](#-recent-updates)
-- [Documentation](#-documentation)
-- [License](#-license)
+At its core, DeepVerify analyzes news articles and returns a verdict with a confidence score. But there's more to it:
+
+- **Paste text or a URL** — the analyzer lives right on the home page, no digging around
+- **Get a verdict in seconds** — Real, Fake, or Uncertain, with a 0-100% confidence score
+- **See the reasoning** — sentiment analysis, bias signals, and source credibility checks
+- **Ask the chatbot** — an Ollama-powered assistant (llama3.2:1b) that can explain results, give media literacy tips, or just chat
+- **Track your history** — logged-in users can review every article they've checked
+- **Use it in your browser** — there's a Chrome extension for quick checks while you browse
+- **Read in any language** — automatic language detection and translation built in
 
 ---
 
-## 🎯 Project Overview
+## Getting started
 
-**DeepVerify** (formerly VeriGlow) is an enterprise-grade fake news detection and fact-checking platform that combines machine learning, natural language processing, and AI-powered analysis to help users verify the authenticity of news articles and claims.
+### The easy way (Windows)
 
-### Key Capabilities
+Just double-click `START-VERIGLOW.bat`. It checks your prerequisites, installs what's missing, spins up Docker, and opens the app in your browser automatically.
 
-- **ML-Based Analysis**: Trained machine learning models classify articles as Real, Fake, or Uncertain
-- **Confidence Scoring**: Provides 0-100% confidence scores for each verdict
-- **Source Verification**: Cross-references claims with trusted news sources
-- **Multi-Language Support**: Automatic language detection and translation
-- **AI Chatbot Assistant**: Ollama-powered conversational assistant (llama3.2:1b model)
-- **User Authentication**: Secure JWT-based authentication system
-- **Analysis History**: Track and review past analyses
-- **Statistics Dashboard**: View analysis trends and insights
-- **Browser Extension**: Chrome extension for quick fact-checking
+- First run: around 5-10 minutes (downloading dependencies)
+- After that: around 30 seconds
 
----
+To stop everything: double-click `STOP-VERIGLOW.bat`.
 
-## 🚀 Quick Start
+### The manual way
 
-### One-Click Launch (Windows)
+Prerequisites: Python 3.11+, Node.js 18+, Docker Desktop
 
-**Just double-click:** `START-VERIGLOW.bat`
+```bash
+# 1. Clone the repo
+git clone <repository-url>
+cd Fake-News-main
 
-The launcher automatically:
-- ✅ Checks prerequisites
-- ✅ Installs dependencies
-- ✅ Starts Docker services (MongoDB, Redis)
-- ✅ Starts backend & frontend servers
-- ✅ Opens application in browser
+# 2. Start the databases
+docker-compose up -d mongo redis
 
-**First run:** ~5-10 minutes | **Subsequent runs:** ~30 seconds
+# 3. Set up the backend
+cd backend
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # Mac/Linux
+pip install -r requirements.txt
 
-### Stop Application
+# 4. Set up the frontend
+cd ../frontend
+npm install
 
-Double-click: `STOP-VERIGLOW.bat`
+# 5. Start everything
+# Terminal 1
+cd backend && python main.py
 
-### Access URLs
-
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
-- **Alternative API Docs**: http://localhost:8000/redoc
-
----
-
-## ✨ Features
-
-### Core Features
-
-- **News Article Analysis**
-  - Paste article text or URL on the home page
-  - ML-based verdict: Real/Fake/Uncertain
-  - Confidence scoring (0-100%)
-  - Sentiment analysis and bias detection
-  - Source credibility verification
-
-- **AI Chatbot Assistant**
-  - Powered by Ollama (llama3.2:1b model)
-  - Explains DeepVerify features and usage
-  - Provides latest news and current events
-  - Offers fact-checking tips and media literacy advice
-  - Intelligent conversation on any topic
-
-- **User Authentication**
-  - Secure signup/login system
-  - JWT token-based authentication
-  - Password hashing (bcrypt/argon2)
-  - Session management
-
-- **Analysis History**
-  - Save and review past analyses
-  - Track verification history
-  - Export analysis results
-
-- **Statistics Dashboard**
-  - View analysis trends
-  - Track accuracy metrics
-  - Monitor system performance
-
-- **Multi-Language Support**
-  - Automatic language detection
-  - Translation support via deep-translator
-  - Analyze articles in multiple languages
-
-### Security Features
-
-- JWT authentication with secure token management
-- Password hashing using Passlib (bcrypt/argon2)
-- Rate limiting on API endpoints
-- Request size limits
-- Input validation and sanitization (Bleach)
-- CORS protection with strict whitelisting
-- CSRF protection (configurable)
-
-### Enterprise Features
-
-- **Monitoring**: Prometheus metrics and Sentry error tracking
-- **Caching**: Redis-based caching for improved performance
-- **Background Tasks**: Celery for asynchronous processing
-- **GDPR Compliance**: Privacy-focused data handling
-- **Batch Processing**: Analyze multiple articles efficiently
-- **Docker Deployment**: Containerized architecture
-
-### UI/UX Features
-
-- Interactive RGB background effect
-- Responsive design for all devices
-- Custom logo with magnifying glass + detective hat
-- Intuitive navigation
-- Real-time analysis feedback
-
----
-
-## 🛠 Tech Stack
-
-### Frontend
-
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Next.js** | 14.2.3 | React framework for production |
-| **React** | 18.2.0 | UI library |
-| **TypeScript** | 5.3.3 | Type-safe JavaScript |
-| **Axios** | 1.6.7 | HTTP client for API calls |
-
-**Frontend Features:**
-- Server-side rendering (SSR)
-- Interactive RGB background effect
-- Custom Logo component
-- Responsive design
-
-### Backend
-
-| Technology | Purpose |
-|------------|---------|
-| **FastAPI** | Modern Python web framework |
-| **Uvicorn** | ASGI server with standard extras |
-| **Motor** | Async MongoDB driver |
-| **Redis** | Caching and session storage |
-| **Celery** | Background task processing |
-
-### AI/ML Stack
-
-| Technology | Purpose |
-|------------|---------|
-| **Scikit-learn** | Machine learning models |
-| **NLTK** | Natural language processing |
-| **TextBlob** | Sentiment analysis |
-| **Ollama** | Local AI inference (llama3.2:1b) |
-| **Langdetect** | Language detection |
-| **Deep-translator** | Multi-language translation |
-| **BeautifulSoup4** | Web scraping and parsing |
-
-### Security & Authentication
-
-| Technology | Purpose |
-|------------|---------|
-| **PyJWT** | JSON Web Token implementation |
-| **Passlib** | Password hashing (bcrypt/argon2) |
-| **Cryptography** | Encryption utilities |
-| **Bleach** | Input sanitization |
-| **Email-validator** | Email validation |
-
-### Infrastructure
-
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Docker** | Latest | Containerization |
-| **Docker Compose** | 3.8 | Multi-container orchestration |
-| **MongoDB** | 6 | NoSQL database |
-| **Redis** | 7-alpine | In-memory data store |
-
-### Monitoring & Observability
-
-| Technology | Purpose |
-|------------|---------|
-| **Prometheus** | Metrics collection |
-| **Sentry** | Error tracking and monitoring |
-| **Python Logging** | Application logging |
-
----
-
-## 📁 Project Structure
-
-```
-Fake-News-main/
-├── backend/                    # FastAPI backend application
-│   ├── admin/                  # Admin functionality
-│   ├── app_logging/            # Logging configuration
-│   ├── auth/                   # Authentication modules
-│   ├── cache/                  # Redis caching layer
-│   ├── compliance/             # GDPR compliance
-│   ├── config/                 # Configuration management
-│   ├── middleware/             # Custom middleware
-│   │   ├── rate_limiter.py     # Rate limiting
-│   │   ├── csrf_protection.py  # CSRF protection
-│   │   └── error_handler.py    # Error handling
-│   ├── ml/                     # Machine learning models
-│   ├── monitoring/             # Prometheus & Sentry
-│   ├── payment/                # Payment integration
-│   ├── scripts/                # Utility scripts
-│   ├── security/               # Security utilities
-│   ├── services/               # Business logic services
-│   ├── tasks/                  # Celery tasks
-│   ├── validation/             # Input validation
-│   ├── webhooks/               # Webhook handlers
-│   ├── main.py                 # Application entry point
-│   ├── auth.py                 # Auth router
-│   ├── analyze_router.py       # Analysis endpoints
-│   ├── chat.py                 # Chatbot endpoints
-│   ├── history.py              # History endpoints
-│   ├── stats.py                # Statistics endpoints
-│   ├── model_final.pkl         # Trained ML model
-│   ├── tfidf_final.pkl         # TF-IDF vectorizer
-│   ├── requirements.txt        # Python dependencies
-│   ├── Dockerfile              # Backend container
-│   └── .env                    # Environment variables
-│
-├── frontend/                   # Next.js frontend application
-│   ├── src/
-│   │   ├── app/                # Next.js app directory
-│   │   ├── components/         # React components
-│   │   └── styles/             # CSS styles
-│   ├── package.json            # Node dependencies
-│   ├── tsconfig.json           # TypeScript config
-│   ├── Dockerfile              # Frontend container
-│   └── .env.local              # Frontend environment
-│
-├── browser-extension/          # Chrome extension
-│   ├── manifest.json           # Extension manifest
-│   ├── popup.html              # Extension popup UI
-│   ├── popup.js                # Popup logic
-│   └── background.js           # Background script
-│
-├── docker-compose.yml          # Docker orchestration
-├── START-VERIGLOW.bat          # Windows startup script
-├── STOP-VERIGLOW.bat           # Windows shutdown script
-└── README.md                   # This file
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+# If the above fails, try:
+npx next dev
 ```
 
+Then open http://localhost:3000 and you're good to go.
+
+Want the AI chatbot? Install Ollama (https://ollama.ai), run `ollama pull llama3.2:1b`, then `ollama serve`.
+
 ---
 
-## 🔧 Setup Instructions
+## Environment setup
 
-### Prerequisites
-
-Before starting, ensure you have the following installed:
-
-1. **Python 3.11+** - [Download](https://python.org)
-   - ⚠️ Check "Add Python to PATH" during installation
-   
-2. **Node.js 18+** - [Download](https://nodejs.org)
-   - Includes npm package manager
-   
-3. **Docker Desktop** - [Download](https://docker.com/products/docker-desktop)
-   - Must be running before starting the application
-   - See `DOCKER-SETUP-GUIDE.txt` for detailed installation
-
-4. **Ollama** (Optional, for AI chatbot)
-   - [Download Ollama](https://ollama.ai)
-   - Pull the model: `ollama pull llama3.2:1b`
-
-### Installation
-
-#### Option 1: Automated Setup (Recommended)
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Fake-News-main
-   ```
-
-2. **Start Docker Desktop**
-   - Ensure Docker is running
-
-3. **Run the launcher**
-   - Double-click `START-VERIGLOW.bat` (Windows)
-   - The script handles all setup automatically
-
-#### Option 2: Manual Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Fake-News-main
-   ```
-
-2. **Start Docker services**
-   ```bash
-   docker-compose up -d mongo redis
-   ```
-
-3. **Setup Backend**
-   ```bash
-   cd backend
-   python -m venv .venv
-   .venv\Scripts\activate  # Windows
-   # source .venv/bin/activate  # Linux/Mac
-   pip install -r requirements.txt
-   ```
-
-4. **Setup Frontend**
-   ```bash
-   cd frontend
-   npm install
-   ```
-
-5. **Configure Environment Variables**
-   - Backend: Edit `backend/.env`
-   - Frontend: Edit `frontend/.env.local`
-
-6. **Start Services**
-   ```bash
-   # Terminal 1 - Backend
-   cd backend
-   python main.py
-
-   # Terminal 2 - Frontend
-   cd frontend
-   npm run dev
-
-   # Terminal 3 - Celery (optional)
-   cd backend
-   celery -A celery_app worker --loglevel=info
-   ```
-
-7. **Start Ollama (optional)**
-   ```bash
-   ollama serve
-   ```
-
-### Environment Variables
-
-#### Backend (.env)
-
+**backend/.env**
 ```env
-# Database
 MONGO_URI=mongodb://localhost:27017
 MONGO_DB=veriglow
-
-# Cache
 REDIS_URL=redis://localhost:6379
 
-# Authentication
 JWT_SECRET=your-secret-key-here
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 REFRESH_TOKEN_EXPIRE_MINUTES=1440
 
-# CORS
 FRONTEND_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 
-# API Keys (optional)
+# Optional but recommended
 GOOGLE_FACTCHECK_API_KEY=your-key-here
-GOOGLE_GEMINI_API_KEY=your-key-here
 NEWS_API_KEY=your-key-here
 
-# Environment
 ENVIRONMENT=development
 DEBUG=true
 ```
 
-#### Frontend (.env.local)
-
+**frontend/.env.local**
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ---
 
-## 🌐 API Endpoints
+## Tech stack
 
-### Authentication
+**Frontend:** Next.js 14, React 18, TypeScript, Axios
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/v1/auth/signup` | Register new user | No |
-| POST | `/api/v1/auth/login` | Login user | No |
+**Backend:** FastAPI, Uvicorn, Motor (async MongoDB), Redis, Celery
 
-**Signup Request:**
+**ML / NLP:** Scikit-learn, NLTK, TextBlob, Langdetect, Deep-translator, BeautifulSoup4
+
+**AI Chatbot:** Ollama (llama3.2:1b running locally)
+
+**Infrastructure:** Docker, MongoDB 6, Redis 7
+
+**Security:** PyJWT, Passlib (bcrypt/argon2), Bleach, rate limiting, CORS whitelisting
+
+---
+
+## API overview
+
+The full interactive docs are at http://localhost:8000/docs once the app is running. Here's the quick summary:
+
+| Endpoint | Method | What it does |
+|---|---|---|
+| `/api/v1/auth/signup` | POST | Create an account |
+| `/api/v1/auth/login` | POST | Log in, get a JWT |
+| `/api/v1/analyze` | POST | Analyze an article |
+| `/api/v1/chat` | POST | Chat with the assistant |
+| `/api/v1/history` | GET | Your past analyses |
+| `/api/v1/stats` | GET | Platform statistics |
+| `/health` | GET | Health check |
+
+Quick example — analyze an article:
 ```json
+POST /api/v1/analyze
 {
-  "email": "user@example.com",
-  "password": "securepassword",
-  "username": "username"
+  "text": "Article text here...",
+  "url": "https://example.com/article"
 }
-```
 
-**Login Response:**
-```json
-{
-  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
-  "token_type": "bearer",
-  "user": {
-    "email": "user@example.com",
-    "username": "username"
-  }
-}
-```
-
-### Analysis
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/v1/analyze` | Analyze news article | Optional |
-
-**Request:**
-```json
-{
-  "text": "Article text to analyze...",
-  "url": "https://example.com/article",
-  "language": "en"
-}
-```
-
-**Response:**
-```json
+Response:
 {
   "verdict": "Real",
   "confidence": 87.5,
   "sentiment": "neutral",
-  "sources": ["source1.com", "source2.com"],
-  "language": "en",
-  "analysis_id": "abc123"
+  "sources": ["source1.com", "source2.com"]
 }
 ```
 
-### Chat
+---
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/v1/chat` | Chat with AI assistant | No |
-| GET | `/api/v1/chat/health` | Check chatbot status | No |
+## Project layout
 
-**Request:**
-```json
-{
-  "message": "How do I use DeepVerify?"
-}
+```
+Fake-News-main/
+├── backend/          # FastAPI app — ML models, auth, API routes
+├── frontend/         # Next.js app — UI, components, styles
+├── browser-extension/# Chrome extension for in-browser checks
+├── docker-compose.yml
+├── START-VERIGLOW.bat
+└── STOP-VERIGLOW.bat
 ```
 
-**Response:**
-```json
-{
-  "reply": "DeepVerify is easy to use! Simply paste your article text..."
-}
-```
+---
 
-### History
+## Troubleshooting
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/v1/history` | Get user's analysis history | Yes |
-| GET | `/api/v1/history/{id}` | Get specific analysis | Yes |
+**Docker won't start** — Make sure Docker Desktop is actually open and running before launching.
 
-### Statistics
+**Chatbot not responding** — Run `ollama serve` in a separate terminal and make sure you've pulled the model (`ollama pull llama3.2:1b`).
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/v1/stats` | Get platform statistics | Yes |
+**Port conflict** — Something else is using 3000, 8000, 27017, or 6379. Check your running processes and stop whatever's occupying those ports.
 
-**Response:**
-```json
-{
-  "total_analyses": 1250,
-  "accuracy_rate": 92.3,
-  "fake_detected": 450,
-  "real_verified": 800
-}
-```
+**Missing packages** — Run `pip install -r requirements.txt` (backend) or `npm install` (frontend) again.
 
-### Health Check
+**Frontend won't start with npm run dev** — Try `npx next dev` instead as a fallback.
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/health` | Check API health | No |
+Still stuck? Check the logs or open an issue on GitHub (https://github.com/AKNIAZI47/DeepVerify/issues).
 
 ---
 
-## ⚙️ Configuration
+## Contributing
 
-### MongoDB Configuration
+Found a bug or have an idea? Contributions are welcome.
 
-The application uses MongoDB for data persistence:
-
-- **Connection URI**: `mongodb://localhost:27017`
-- **Database**: `veriglow`
-- **Collections**: `users`, `analyses`, `history`, `stats`
-
-### Redis Configuration
-
-Redis is used for caching and session management:
-
-- **Connection URL**: `redis://localhost:6379`
-- **Use Cases**: Rate limiting, session storage, analysis caching
-
-### Ollama Setup
-
-For the AI chatbot to work:
-
-1. Install Ollama: https://ollama.ai
-2. Pull the model:
-   ```bash
-   ollama pull llama3.2:1b
-   ```
-3. Start Ollama server:
-   ```bash
-   ollama serve
-   ```
-4. The chatbot connects to `http://localhost:11434`
-
-### Rate Limiting
-
-Configured per endpoint:
-- **Default**: 60 requests/minute
-- **Analysis**: 20 requests/minute
-- **Chat**: 30 requests/minute
-- **Login**: 10 requests/minute
-
-### Security Settings
-
-- **JWT Secret**: Change in production (`.env` file)
-- **Token Expiry**: 30 minutes (access), 24 hours (refresh)
-- **CORS**: Whitelist specific origins in production
-- **CSRF Protection**: Disabled in development, enable for production
+1. Fork the repo
+2. Create a branch: `git checkout -b feature/your-idea`
+3. Make your changes and commit: `git commit -m 'Add your idea'`
+4. Push and open a Pull Request
 
 ---
 
-## 🆕 Recent Updates
+## License
 
-### Version 2.0 - DeepVerify Rebrand
-
-- ✅ **Rebranded** from VeriGlow to DeepVerify
-- ✅ **Added Logo Component** with magnifying glass + detective hat design
-- ✅ **Moved News Analyzer** to home page for better UX
-- ✅ **Moved Statistics** to dedicated dashboard page
-- ✅ **Integrated Ollama Chatbot** with llama3.2:1b model
-- ✅ **Added Interactive RGB Background** effect
-- ✅ **Removed CSRF Protection** in development mode
-- ✅ **Increased Ollama Timeout** to 120 seconds for slower systems
-- ✅ **Enhanced Chat System** with intent detection and news integration
-- ✅ **Improved Error Handling** with retry logic for Ollama
-- ✅ **Added Health Check Endpoints** for monitoring
-
-### Security Improvements
-
-- ✅ JWT authentication with secure token management
-- ✅ Password hashing using bcrypt/argon2
-- ✅ Rate limiting on all endpoints
-- ✅ Input validation and sanitization
-- ✅ Request size limits
-- ✅ CORS protection with strict whitelisting
-
-### Performance Optimizations
-
-- ✅ Redis caching for frequently accessed data
-- ✅ Async MongoDB operations with Motor
-- ✅ Background task processing with Celery
-- ✅ Lazy loading of ML models
-- ✅ Connection pooling for databases
+MIT — do whatever you want with it, just don't blame me if it breaks.
 
 ---
 
-## 📖 Documentation
-
-### Quick Start Guides
-
-- `SIMPLE-START.txt` - Ultra-simple 3-step guide for beginners
-- `README-FIRST.txt` - Guided setup path
-- `BEFORE-YOU-START.txt` - Pre-installation checklist
-- `HOW-TO-RUN-DOCKER.txt` - Quick Docker guide
-
-### Detailed Guides
-
-- `DOCKER-SETUP-GUIDE.txt` - Step-by-step Docker installation for Windows
-- `QUICK-START-GUIDE.txt` - Complete user guide with troubleshooting
-- `STARTUP-FLOW.txt` - Visual guide of application startup
-- `SECURITY_IMPROVEMENTS.md` - Security features documentation
-
-### Reference
-
-- `FILES-OVERVIEW.txt` - Explanation of each file
-- `DOCUMENTATION-INDEX.txt` - Complete list of help files
-- `/docs` endpoint - Interactive API documentation (Swagger UI)
-- `/redoc` endpoint - Alternative API documentation (ReDoc)
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Docker not starting:**
-- Ensure Docker Desktop is running
-- Check Docker service status
-- Restart Docker Desktop
-
-**Ollama connection failed:**
-- Install Ollama: https://ollama.ai
-- Run: `ollama serve`
-- Pull model: `ollama pull llama3.2:1b`
-
-**Port already in use:**
-- Backend (8000): Check if another service is using port 8000
-- Frontend (3000): Check if another Next.js app is running
-- MongoDB (27017): Check for existing MongoDB instances
-- Redis (6379): Check for existing Redis instances
-
-**Module not found errors:**
-- Backend: `pip install -r requirements.txt`
-- Frontend: `npm install`
-
-### Getting Help
-
-- Check the documentation files in the project root
-- Review the API documentation at http://localhost:8000/docs
-- Check application logs for error messages
-- Open an issue on GitHub
-
----
-
-## 📞 Support
-
-For support and questions:
-- 📧 Email: support@deepverify.com
-- 🐛 Issues: GitHub Issues
-- 📚 Documentation: `/docs` endpoint
-
----
-
-<div align="center">
-
-**Built with ❤️ by the DeepVerify Team**
-
-[⬆ Back to Top](#deepverify---ai-powered-fake-news-detection-platform)
-
-</div>
-
+Built by AKNIAZI47 (https://github.com/AKNIAZI47)
