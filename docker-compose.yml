@@ -5,9 +5,7 @@ services:
     build: ./backend
     ports:
       - "8000:8000"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017
-      - REDIS_URL=redis://redis:6379
+    env_file: .env  # copy .env.example to .env and fill in values
     depends_on:
       - mongo
       - redis
